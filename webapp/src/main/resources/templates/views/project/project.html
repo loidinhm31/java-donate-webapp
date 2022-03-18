@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="views/fragments :: page_head('Project')"></head>
+<body>
+<div class="container-fluid p-0 m-0">
+    <div th:replace="views/navigation :: header_menu('project')"></div>
+
+    <div class="container-fluid" id="content-background">
+        <div class="row mx-1">
+            <div class="col-3 badge bg-secondary rounded-pill mx-5 my-3">
+                <div class="row my-1">
+                    <div class="col-md-3">
+                        <span class="btn btn-secondary badge rounded-pill hstack gap-4 my-1"
+                            onclick="retrieveProjects(event, undefined)">
+                            <i class="fas fa-filter text-white col-sm-1 my-3 fa-2x"></i>
+                            <p class="my-3 fs-5 text">Filter</p>
+                        </span>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="mb-3 my-3 px-0 selectpicker col-md-12" multiple="multiple" id="project-status-select">
+                            <option th:if="${statuses != null}" th:each="status : ${statuses}"
+                                    th:id="${status.name}"
+                                    th:data-tokens="${status.name}"
+                                    th:text="${status.statusName}"
+                                    th:value="${status.name}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="page-content">
+            <div th:fragment="project_content" id="projectContent">
+                <div class="row p-5">
+                    <div class="col-md-3"
+                         th:if="${!content.empty}" th:each="project : ${content}">
+                        <div class="card my-5 d-flex position-relative">
+                            <div class="p-2 py-3">
+                                <img th:with="filePath=${project.filePath != null ? project.filePath : 'sample.jpg'}"
+                                     th:src="${rootPath + filePath}" style="height: 300px;"
+                                     class="card-img-top img-thumbnail" alt="..."/>
+
+                            </div>
+                            <div class="card-body">
+                                <div class="hstack">
+                                    <span class="btn my-2" th:text="${project.status.statusName}"
+                                          th:classappend="${project.status eq project.status.IN_PROGRESS
+                                        ? 'btn-info text-white' : 'btn-warning'}"></span>
+                                    <b class="ms-auto" th:text="${project.projectId}"></b>
+                                </div>
+
+                                <a class="stretched-link text-decoration-none"
+                                   th:href="@{/project/{projectId}(projectId=${project.projectId})}">
+                                    <h4 class="card-title fw-bolder"
+                                        th:text="${project.projectName}">
+                                    </h4>
+                                </a>
+                                <div>
+                                    <p class="card-text" style="height: 150px;">
+                                        <b class="text-muted"
+                                           th:text="${project.projectSummary}">
+                                        </b>
+                                    </p>
+                                </div>
+
+                               <div class="hstack">
+                                   <th:block th:switch="__${#locale.language}__">
+                                       <div class="hstack gap-0"
+                                            th:case="'vi'">
+                                           <p class="card-text fw-bold mb-0">
+                                               <b class="fw-bold"
+                                                  th:text="${#numbers.formatDecimal(project.currentMoney, 3, 'WHITESPACE', 2, 'COMMA') + ' VND'}">
+                                               </b>
+                                               <small class="text-muted">&nbsp donated/ &nbsp</small>
+                                               <b class="fw-bold"
+                                                  th:text="${#numbers.formatDecimal(project.targetMoney, 3, 'WHITESPACE', 2, 'COMMA') + ' VND'}"></b>
+                                           </p>
+
+                                       </div>
+
+                                       <p class="card-text mb-0"
+                                          th:case="*">
+                                           <b class="fw-bold"
+                                              th:text="${#numbers.formatDecimal(project.currentMoney, 3, 'WHITESPACE', 2, 'POINT') + ' VND'}">
+                                           </b>
+                                           <small class="text-muted">&nbsp donated/ &nbsp</small>
+                                           <b class="fw-bold"
+                                              th:text="${#numbers.formatDecimal(project.targetMoney, 3, 'WHITESPACE', 2, 'POINT') + ' VND'}"></b>
+                                       </p>
+                                   </th:block><!-- Donated money -->
+
+                                   <p class="ms-auto mb-0"
+                                      th:with="progress=(${project.targetMoney} == 0  ? '0' : (${project.currentMoney * 1.0} / ${project.targetMoney}) * 100.0 )">
+                                        <small class="text-muted"
+                                               th:text="${#numbers.formatDecimal(progress, 0, 'WHITESPACE', 0, 'POINT')  + '%'}">
+                                        </small>
+                                   </p> <!-- Target money percentage -->
+                               </div>
+
+                                <div class="progress">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 75%"
+                                         th:style="'width:' + ( ${project.targetMoney} == 0  ? '0' : (${project.currentMoney * 1.0} / ${project.targetMoney}) * 100.0 ) + '%;'"
+                                         th:aria-valuemin="0"
+                                         th:aria-valuemax="100"></div>
+                                </div> <!-- Progress bar -->
+
+                                <div class="hstack">
+                                    <p class="card-text">
+                                        <i class="fas fa-user-friends text-muted"></i>
+                                        <small class="text-muted"
+                                                th:text="${#numbers.formatInteger(project.donatedCount, 0, 'WHITESPACE')}">
+                                        </small>
+
+                                        <small class="text-muted">
+                                            times
+                                        </small>
+                                    </p>
+
+                                    <p class="card-text ms-auto"
+                                       th:with="diffDate=${(project.targetTime.getTime() - currentDate.getTime()) / (86400.0 * 1000.0)}">
+                                        <i class="far fa-clock text-muted"></i>
+                                        <small class="text-muted"
+                                               th:if="${diffDate >= 0}"
+                                               th:text="${#numbers.formatInteger(diffDate, 0, 'POINT')}">
+
+                                        </small>
+                                        <small class="text-muted"
+                                           th:if="${diffDate >= 0}">
+                                            DAY(S)
+                                        </small>
+                                        <small class="text-muted"
+                                               th:unless="${diffDate >= 0
+                                                    and (project.status != project.status.ENDED or project.status != project.status.CLOSED)}"
+                                               th:text="${#numbers.formatInteger(-diffDate, 0, 'POINT')}">
+                                        </small>
+                                        <small class="text-muted"
+                                               th:unless="${diffDate >= 0
+                                                    and (project.status != project.status.ENDED or project.status != project.status.CLOSED)}">
+                                            DAY(S) OVERDUE
+                                        </small>
+                                    </p> <!-- Days remain -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:replace="views/fragments :: pagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fab-container">
+        <span class="fab-label">Quick Donate</span>
+        <div class="fab fab-icon-holder">
+            <i class="fas fa-donate"
+               data-bs-toggle="modal" data-bs-target="#donateDetailModalFree"
+               onclick="retrieveProjectList(event)"></i>
+        </div>
+    </div>
+
+    <div th:replace="views/project/project_modal :: donate_modal_free"></div>
+    <div th:replace="views/navigation :: footer_menu"></div>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/2.9.2/umd/popper.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap-select/1.14.0-beta2/dist/js/bootstrap-select.min.js}" ></script>
+<script th:inline="javascript" th:src="@{/js/common.js}"></script>
+<script th:inline="javascript" th:src="@{/js/project.js}"></script>
+
+</html>

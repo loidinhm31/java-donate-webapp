@@ -1,0 +1,8 @@
+sender:
+  mail:
+    active: true
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    from: DONATION APP LOCAL <email.local.notification@gmail.com>

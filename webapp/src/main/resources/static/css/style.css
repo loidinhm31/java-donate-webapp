@@ -1,0 +1,158 @@
+nav#headNavbar  {
+    font-weight: bold;
+    background-color: #0091DE;
+}
+
+.navbar .navbar-nav .nav-item:not(:last-child) .nav-link {
+    border-right: 2px solid #fff;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background: #fafafa;
+}
+
+p {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+}
+
+/** Content **/
+#content-background {
+    background-color: #9FDBFB;
+    min-height: 110vh;
+}
+
+button.btn.dropdown-toggle.btn-light {
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+
+.fab-container {
+    position: fixed;
+    bottom: 100px;
+    right: 50px;
+    z-index: 999;
+    cursor: pointer;
+}
+
+.fab-icon-holder {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background: #016fb9;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.fab-icon-holder:hover {
+    opacity: 0.8;
+}
+
+.fab-icon-holder i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 25px;
+    color: #ffffff;
+}
+
+.fab-icon-holder {
+    width: 60px;
+    height: 60px;
+    background: #d23f31;
+}
+
+.fab-label {
+    padding: 2px 5px;
+    align-self: center;
+    user-select: none;
+    white-space: nowrap;
+    border-radius: 3px;
+    font-size: 16px;
+    background: #666666;
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    margin-right: 10px;
+}
+
+/** Sidebar **/
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+
+#sidebar.active {
+    margin-left: -250px;
+}
+
+#sidebar {
+    min-width: 150px;
+    min-height: 110vh;
+    height: 100%;
+}
+
+a, a:hover, a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+#sidebar {
+    /* don't forget to add all the previously mentioned styles here too */
+    background: #D7D6D6;
+    color: #7F7E7E;
+    transition: all 0.3s;
+}
+
+#sidebar .sidebar-header {
+    padding: 5px;
+    background: #D7D6D6;
+}
+
+#sidebar ul li {
+    border: 1px solid #717171;
+}
+
+#sidebar ul p {
+    color: #7F7E7E;
+    padding: 5px;
+}
+
+#sidebar ul li a {
+    /*padding: 5px;*/
+    font-size: 0.9em;
+    display: block;
+}
+
+#sidebar ul li:hover {
+    background: #BBB7B7;
+}
+
+#sidebar ul li.active {
+    border: none;
+    color: #fff;
+    background: #FF8B00;
+}
+
+/** Project **/
+table tbody tr td ul li.list-group-item {
+    background-color: #BEBEBE;
+    color: #000;
+    display: inline-flex;
+}
+
+table tbody tr td ul.list-group {
+    display: inline-block;
+    position: relative;
+}
+
+
+table thead {
+    background-color: #BEBEBE;
+}

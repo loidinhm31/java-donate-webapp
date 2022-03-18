@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="views/fragments :: page_head(${pageTitle})"></head>
+<body>
+<div class="container-fluid px-0">
+	<div th:replace="views/navigation :: header_menu('register')"></div>
+
+	<div class="row mt-3 mb-5 pb-3">
+		<div class="col-md-6 mx-auto">
+			<div class="text-center">
+				<h2>User Registration</h2>
+				<p th:if="${error != null}" th:text="${error}" class="text-danger fs-6 fw-normal fst-italic"></p>
+			</div>
+			<form th:action="@{/signup/user}" method="POST"
+				  th:object="${userRequestDto}">
+				<div class="form-group row my-2">
+					<label class="col-sm-4 col-form-label">Username:</label>
+
+					<div class="col-sm-8">
+						<input type="text" th:field="*{username}" class="form-control"
+							   required="required" maxlength="45" minlength="2" id="input-username"
+							   oninput="checkUsernameUnique(event)"
+						/>
+						<p id="info-username" class="text-warning fs-6 fw-normal fst-italic"></p>
+					</div>
+				</div>
+
+				<div class="form-group row my-2">
+					<label class="col-sm-4 col-form-label">First Name:</label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{firstName}" class="form-control"
+							   required maxlength="45" minlength="2"
+						/>
+					</div>
+				</div>
+
+				<div class="form-group row my-2">
+					<label class="col-sm-4 col-form-label">Last Name:</label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{lastName}" class="form-control"
+							   required maxlength="45" minlength="2"
+						/>
+					</div>
+				</div>
+
+				<div class="form-group row my-2">
+					<label class="col-sm-4 col-form-label">Date of birth:</label>
+					<div class="col-sm-8">
+						<input type="date" th:field="*{birthdate}" class="form-control"
+							   required
+						/>
+					</div>
+				</div>
+
+				<div class="form-group row my-2">
+					<label class="col-sm-4 col-form-label">E-mail:</label>
+					<div class="col-sm-8">
+						<input type="email" th:field="*{email}" class="form-control"
+							   required maxlength="45" minlength="8" id="input-email"
+							   oninput="checkEmailUnique(event)"
+						/>
+						<p id="info-email" class="text-warning fs-6 fw-normal fst-italic"></p>
+					</div>
+				</div>
+
+				<div class="form-group row my-2">
+					<label class="col-sm-4 col-form-label">Password:</label>
+					<div class="col-sm-8">
+						<input type="password" th:field="*{password}" class="form-control"
+							   required maxlength="15" minlength="8"
+							   oninput="checkPasswordMatch(document.getElementById('confirmPassword'))"
+						/>
+					</div>
+				</div>
+
+				<div class="form-group row my-2">
+					<label class="col-sm-4 col-form-label">Re-type Password:</label>
+					<div class="col-sm-8">
+						<input type="password" id="confirmPassword" class="form-control"
+							   required maxlength="15" minlength="8"
+							   oninput="checkPasswordMatch(this)"
+						/>
+					</div>
+				</div>
+
+				<div class="form-group row my-2">
+					<label class="col-sm-4 col-form-label">Phone Number:</label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{phoneNumber}" class="form-control"
+							   maxlength="15" minlength="10" />
+					</div>
+				</div>
+
+				<div class="text-center my-5">
+					<input type="submit" value="Create" class="btn btn-primary" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div th:replace="views/fragments :: modal_dialog"></div>
+	<div th:replace="views/navigation :: footer_menu"></div>
+</div>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/2.9.2/umd/popper.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}" ></script>
+<script type="text/javascript" th:src="@{/js/common_modal.js}"></script>
+<script type="text/javascript" th:src="@{/js/common_user_form.js}"></script>
+</body>
+</html>

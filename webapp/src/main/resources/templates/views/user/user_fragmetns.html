@@ -1,0 +1,40 @@
+<div th:fragment="side_bar_user(bar)">
+    <nav id="sidebar">
+        <ul class="list-unstyled components">
+            <li th:classappend="${bar} eq 'userInfo' ? 'active'">
+                <div class="p-1 position-relative">
+                    <div class="my-3">
+                        <a class="stretched-link fw-bold"
+                           th:href="@{/user-detail}">
+                            User Information
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <li th:classappend="${bar} eq 'userDonation' ? 'active'">
+                <div class="p-1  position-relative">
+                    <div class="my-3">
+                        <a class="stretched-link fw-bold"
+                           th:href="@{/user-detail/donation}">
+                            Donation
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <li th:classappend="${bar} eq 'userFollow' ? 'active'">
+                <div class="p-1  position-relative">
+                    <div class="my-3">
+                        <a class="stretched-link fw-bold"
+                           th:href="@{/user-detail/follower}">
+                            Follow
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+
+        </ul>
+    </nav>
+</div>

@@ -1,0 +1,28 @@
+<div th:fragment="tab_user">
+    <div class="shadow p-3 mb-5 bg-opacity-25 rounded" id="page-content">
+        <ul class="nav nav-tabs pt-2" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                        type="button" role="tab" aria-controls="home" aria-selected="true"
+                        onclick="retrieveUsers(event, undefined)">
+                    <p>List Of User</p>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                        type="button" role="tab" aria-controls="profile" aria-selected="false"
+                        onclick="retrieveUsersInRole(event, undefined)">
+                    <p>Role Management</p>
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div th:replace="views/admin/user/admin_user :: user"></div>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div th:replace="views/admin/user/admin_role :: role"></div>
+            </div>
+        </div>
+    </div>
+</div>

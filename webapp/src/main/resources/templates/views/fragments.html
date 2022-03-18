@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="page_head(sub_title)">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
+
+	<title th:text="'Donation - ' + ${sub_title}"></title>
+	
+	<link th:rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}" />
+	<link th:rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/5.15.2/css/all.min.css}" />
+	<link th:rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap-select/1.14.0-beta2/dist/css/bootstrap-select.min.css}" />
+	<link th:rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<a th:fragment="page_link(label)"
+   class="page-link">
+	[[${label}]]
+</a>
+
+
+<div th:fragment="pagination">
+	<div th:if="${content != null && !content.empty}" th:with="pageNumber=${content.number + 1}" class="py-5">
+
+		<nav>
+			<ul class="pagination justify-content-center flex-wrap">
+				<li class="hstack gap-1 mx-3 my-1">
+					<p class="text-muted"
+					   th:text="${content.totalElements < pageNumber * 20 ? content.totalElements : pageNumber * 20}"></p>
+					<p class="text-muted">of</p>
+					<p class="text-muted"
+					   th:text="${content.totalElements}"></p>
+				</li>
+
+				<li th:class="${pageNumber > 1 ? 'page-item' : 'page-item disabled'}">
+					<a th:replace="views/fragments :: page_link('Previous')"></a>
+				</li>
+
+				<li th:class="${pageNumber != i ? 'page-item': 'page-item active'}"
+					th:each="i : ${#numbers.sequence(1, content.totalPages)}">
+					<a th:replace="views/fragments :: page_link(${i})"></a>
+				</li>
+
+				<li th:class="${pageNumber < content.totalPages ? 'page-item' : 'page-item disabled'}">
+					<a th:replace="views/fragments :: page_link('Next')"></a>
+				</li>
+
+			</ul>
+		</nav>
+	</div>
+</div>
+
+<!-- Modal -->
+<div th:fragment="modal_dialog" class="modal fade text-center" id="modalDialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalTitle">Modal title</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p id="modalBody">Modal body text goes here.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="confirm_modal" class="modal fade text-center" id="confirmModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Delete Confirmation</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			
+			<div class="modal-body">
+				<span id="confirmText"></span>
+			</div>
+			
+			<div class="modal-footer">
+				<a class="btn btn-success" href="" id="yesButton">Yes</a>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

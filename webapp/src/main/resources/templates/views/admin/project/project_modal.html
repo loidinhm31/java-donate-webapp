@@ -1,0 +1,71 @@
+<div th:fragment="time_modal" class="modal fade" id="timeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+                <h4 class="modal-title" id="modalTitle">Extend Time</h4>
+            </div>
+
+            <div th:fragment="time_detail" id="timeDetail">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label class="rounded-pill bg-info p-2" for="targetDate">Target Date</label>
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="date" class="my-2" id="targetDate"
+                                   th:if="${project != null}"
+                                   th:value="${project.targetTime}"
+                                   th:field="${project.targetTime}"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label class="rounded-pill bg-info p-2">Extend Count</label>
+                        </div>
+                        <div class="col-sm-5">
+                            <p class="my-2"
+                               th:if="${project != null}"
+                               th:text="${project.countExtend == null ? 0 : project.countExtend}"></p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer d-flex justify-content-center">
+                    <button class="btn btn-success" id="yesButton"
+                            th:if="${project != null}"
+                            th:onclick="updateProjectTime(event, [[${project.projectId}]])">Yes
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="delete_modal" class="modal fade" id="deleteInitProjectModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>Do you want to delete this project?</p>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-center">
+                <div th:fragment="project_detele" id="projectDelete">
+                    <button type="button" class="btn btn-success"
+                            id="confirmDelete"
+                            th:if="${projectId != null}"
+                            th:onclick="deleteInitProject(event, [[${projectId}]])">
+                        Yes
+                    </button>
+                </div>
+
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>

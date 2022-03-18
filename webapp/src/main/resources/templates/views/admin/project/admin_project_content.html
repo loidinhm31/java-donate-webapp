@@ -1,0 +1,208 @@
+<div th:fragment="project" id="page-content">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-10 shadow-lg rounded mx-auto my-3">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center" scope="col">Criteria</th>
+                            <th class="text-center" scope="col">Value(s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="criteria-1 col-4">
+                            <p>Beneficiary Phone Number</p>
+                        </td>
+                        <td class="value-1 col-8">
+                            <div class="row mx-3">
+                                <ul id="select1" class="list-group list-group-horizontal my-2">
+                                </ul>
+                            </div>
+
+                            <div class="row mx-3">
+                                <label for="value1">
+                                    <input type="text" id="value1"/>
+                                    <button class="btn btn-warning rounded-3"
+                                            onclick="addValue(1)">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="criteria-2 col-4">
+                            <p>Project Code</p>
+                        </td>
+
+                        <td class="value-2 col-8">
+                            <div class="row mx-1">
+                                <select class="form-select-lg mb-3 selectpicker col-sm-12" multiple="multiple" id="project-select"
+                                        data-live-search="true">
+                                    <option th:if="${projectCodes != null}" th:each="code : ${projectCodes}"
+                                            th:data-tokens="${code.projectId + '_' + code.projectName}"
+                                            th:text="${code.projectId + ' - ' + code.projectName}"
+                                            th:value="${code.projectId}">
+                                    </option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="criteria-3 col-4">
+                            <p>Project Status</p>
+                        </td>
+
+                        <td class="value-3 col-8">
+                            <div class="row mx-1">
+                                <select class="form-select-lg mb-3 selectpicker col-sm-12" multiple="multiple" id="status-select"
+                                        data-live-search="true">
+                                    <option th:if="${projectStatuses != null}" th:each="status : ${projectStatuses}"
+                                            th:id="${status.name}"
+                                            th:data-tokens="${status.name}"
+                                            th:text="${status.statusName}"
+                                            th:value="${status.name}">
+                                    </option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div class="col-2 ms-auto">
+                    <button class="btn btn-primary my-2"
+                        onclick="retrieveProjects(event, undefined)">
+                        Search
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-4 mt-3">
+                <a class="btn btn-success ms-2" type="submit"
+                        th:href="@{/admin/project/create}">
+                    <span>Add Project</span>
+                </a>
+            </div> <!-- Add -->
+        </div>
+
+
+        <div th:fragment="project_table" id="searchProjectResult">
+            <div class="shadow-lg rounded mx-1 my-3">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="text-center">#</th>
+                        <th scope="col" class="text-center">Project ID</th>
+                        <th scope="col" class="text-center">Project Name</th>
+                        <th scope="col" class="text-center">Status</th>
+                        <th scope="col" class="text-center">Target Amount</th>
+                        <th scope="col" class="text-center">Donated Amount</th>
+                        <th scope="col" class="text-center">Start Date</th>
+                        <th scope="col" class="text-center">Target Date</th>
+                        <th scope="col" class="text-center">Number of extend time</th>
+                        <th scope="col" class="text-center">Beneficiary</th>
+                        <th scope="col" class="text-center">Beneficiary Phone</th>
+                        <th scope="col" class="text-center">Beneficiary Type</th>
+                        <th scope="col" class="text-center">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="overflow-scroll">
+                    <tr th:if="${!content.empty}"
+                        th:each="project, iteration : ${content}">
+
+                        <th scope="row" th:text="${iteration.count}"></th>
+
+                        <th>
+                            <a class="text-decoration-none"
+                               th:text="${project.projectId}"
+                               th:href="@{/project/{projectId}(projectId=${project.projectId})}"></a>
+                        </th>
+
+                        <td th:text="${project.projectName}"></td>
+
+                        <td th:text="${project.status.statusName}"></td>
+
+                        <td>
+                            <th:block th:switch="__${#locale.language}__">
+                                <div th:case="'vi'">
+                                    <p class="text-end" th:text="${#numbers.formatDecimal(project.targetMoney, 3, 'WHITESPACE', 2, 'COMMA') + ' VND'}"></p>
+                                </div>
+
+                                <div th:case="*">
+                                    <p class="text-end" th:text="${#numbers.formatDecimal(project.targetMoney, 3, 'WHITESPACE', 2, 'POINT') + ' VND'}"></p>
+                                </div>
+                            </th:block>
+                        </td>
+
+                        <td>
+                            <th:block th:switch="__${#locale.language}__">
+                                <div th:case="'vi'">
+                                    <p class="text-end" th:text="${#numbers.formatDecimal(project.currentMoney, 3, 'WHITESPACE', 2, 'COMMA') + ' VND'}"></p>
+                                </div>
+
+                                <div th:case="*">
+                                    <p class="text-end" th:text="${#numbers.formatDecimal(project.currentMoney, 3, 'WHITESPACE', 2, 'POINT') + ' VND'}"></p>
+                                </div>
+                            </th:block>
+                        </td>
+
+                        <td>
+                            <span th:text="${#dates.format(project.startTime, 'dd-MM-yyyy')}"></span>
+                        </td>
+
+                        <td>
+                            <span th:text="${#dates.format(project.targetTime, 'dd-MM-yyyy')}"></span>
+                        </td>
+
+                        <td th:text="${project.countExtend}"></td>
+
+                        <td th:text="${project.beneficiaryName}"></td>
+
+                        <td th:text="${project.beneficiaryPhoneNumber}"></td>
+
+                        <td th:text="${project.beneficiaryType}"></td>
+
+                        <td>
+                            <button class="btn btn-info m-1" th:disabled="${project.countExtend >= 3
+                                                                            || project.status == project.status.CLOSED}"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#timeModal"
+                                    th:onclick="retrieveProjectTime(event, [[${project.projectId}]])">
+                                <i class="far fa-clock"></i>
+                            </button>
+
+                            <button class="btn btn-primary m-1" type="button"
+                                    th:disabled="${project.status == project.status.CLOSED}"
+                                    th:onclick="editProject([[${project.projectId}]])">
+                                <i class="fas fa-pen"></i>
+                            </button>
+
+                            <button class="btn btn-danger m-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteInitProjectModal"
+                                    th:disabled="${project.status != project.status.CREATED}"
+                                    th:onclick="retrieveProjectDelete(event, [[${project.projectId}]])">
+                                <i class="fas fa-minus-circle"></i>
+                            </button>
+                            <div th:replace="views/admin/project/project_modal :: delete_modal"></div>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table> <!-- Table -->
+            </div>
+
+            <div th:replace="views/fragments :: pagination"></div>
+        </div>
+
+    </div>
+</div>

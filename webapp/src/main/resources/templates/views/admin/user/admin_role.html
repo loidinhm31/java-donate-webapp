@@ -1,0 +1,102 @@
+<div th:fragment="role" class="container-fluid">
+    <div th:include="views/admin/admin_fragments :: search_role" class="col-5 mt-3">
+    </div> <!-- Search -->
+
+
+    <div th:fragment="user_role_table" id="roleResult">
+        <div class="shadow-lg rounded mx-1 my-3">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Verified</th>
+                    <th scope="col">Activate/ Deactivate <br> (Enable/ Disable)</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">
+                        <button class="btn btn-success ms-2" type="button"
+                                data-bs-toggle="modal" data-bs-target="#modalPermissionMultipleBody">
+                            Update permission
+                        </button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${!content.empty}"
+                    th:each="userDetail,iteration : ${content}">
+
+                    <th scope="row" th:text="${iteration.count}"></th>
+
+                    <td th:text="${userDetail.userAccount.username}"></td>
+
+                    <td th:text="${userDetail.email}"></td>
+
+                    <td th:text="${userDetail.phoneNumber}"></td>
+
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked4"
+                                   disabled
+                                   th:checked="${userDetail.isVerify}">
+                            <label class="form-check-label" for="flexSwitchCheckChecked4"></label>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input mx-auto" type="checkbox" role="switch"
+                                   th:id="${userDetail.userId}"
+                                   th:onchange="changeActive(event, [[${userDetail.userId}]])"
+                                   th:checked="${userDetail.isActive}">
+                            <label class="form-check-label" th:for="${userDetail.userId}"></label>
+                        </div>
+                    </td>
+
+                    <td>
+                        <button class="btn btn-primary ms-2" type="button"
+                                data-bs-toggle="modal" data-bs-target="#modalPermissionBody"
+                                th:onclick="retrieveRoles(event, [[${userDetail.userId}]])">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <div class="active-role form-check">
+                            <input class="form-check-input mx-auto" type="checkbox" value=""
+                                    th:id="${userDetail.userId}">
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>  <!-- Table -->
+        </div>
+
+        <div id="paginationRole">
+            <div th:if="${content != null && !content.empty}" th:with="pageNumber=${content.number + 1}" class="py-5">
+                <nav>
+                    <ul class="pagination justify-content-center flex-wrap">
+                        <li th:class="${pageNumber > 1 ? 'page-item' : 'page-item disabled'}">
+                            <a th:replace="views/fragments :: page_link('Previous')"></a>
+                        </li>
+
+                        <li th:class="${pageNumber != i ? 'page-item': 'page-item active'}"
+                            th:each="i : ${#numbers.sequence(1, content.totalPages)}">
+                            <a th:replace="views/fragments :: page_link(${i})"></a>
+                        </li>
+
+                        <li th:class="${pageNumber < content.totalPages ? 'page-item' : 'page-item disabled'}">
+                            <a th:replace="views/fragments :: page_link('Next')"></a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div th:replace="views/admin/user/admin_modal :: permission_modal"></div>
+        <div th:replace="views/admin/user/admin_modal :: permission_modal_multiple"></div>
+
+
+    </div>
+</div>

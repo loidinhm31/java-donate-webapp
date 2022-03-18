@@ -1,0 +1,108 @@
+<div th:fragment="manual">
+    <div class="container-fluid">
+
+        <div class="shadow-lg rounded mx-1 my-3 bg-light">
+            <div class="container-fluid">
+                <div class="row">
+                    <h3 class="mx-2 my-3">
+                        Update payment information manually
+                    </h3>
+                </div>
+
+                <div class="row mt-3 mb-5 pb-3">
+                    <div class="mx-auto px-5 py-3">
+                        <div th:if="${message != null}"
+                             th:text="${message}"
+                             class="alert alert-success text-center">
+
+                        </div>
+                        <div th:if="${error != null}"
+                             th:text="${error}"
+                             class="alert alert-danger text-center">
+                        </div>
+                        <form th:action="@{/admin/payment/update}" method="POST" id="manualPaymentProcess">
+
+                            <div class="form-group row my-2">
+                                <label class="col-sm-2 col-form-label btn btn-info text-white fw-bold text-start">Transfer Code</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="transferCode" class="form-control"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="form-group row my-2">
+                                <label class="col-sm-2 col-form-label btn btn-info text-white fw-bold text-start">Project Code</label>
+
+                                <div class="col-sm-3">
+                                    <input type="text" name="projectId" class="form-control"
+                                           required="required"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="form-group row my-2">
+                                <label class="col-sm-2 col-form-label btn btn-info text-white fw-bold text-start">Transaction Code (From Bank)</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="transactionCode" class="form-control"
+                                           required
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="form-group row my-2">
+                                <label class="col-sm-2 col-form-label btn btn-info text-white fw-bold text-start">Amount</label>
+                                <div class="col-sm-3">
+                                    <input type="number" name="amount" class="form-control"
+                                           required
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="text-center my-5">
+                                <input type="submit" value="Confirm transfer information" class="btn btn-success fw-bold" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="shadow-lg rounded mx-1 my-3 bg-light">
+            <div class="container-fluid">
+                <div class="row">
+                    <h3 class="mx-2 my-3">
+                        Update payment information using bank statement
+                    </h3>
+                </div>
+
+                <div class="row mt-3 mb-5 pb-3">
+                    <div class="mx-auto px-5 py-3">
+                        <p th:if="${scanMessage != null}"
+                           th:text="${scanMessage}"
+                           class="alert alert-success text-center">
+                        </p>
+                    </div>
+
+                    <form method="POST" th:action="@{/admin/payment/scan}"
+                          enctype="multipart/form-data">
+                        <div class="form-group row my-2">
+                            <label for="inputFile"
+                                   class="col-sm-2 col-form-label col-form-label-sm">Bank Statement File</label>
+                            <div class="input-group col-sm-10">
+                                <input type="file" id="inputFile" name="file-upload"
+                                       class="form-control-file">
+                            </div>
+                        </div>
+                        <button type="submit" value="Submit" class="btn btn-success my-2">
+                            <i class="fas fa-file-upload"></i>
+                            Upload Bank Statement File
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

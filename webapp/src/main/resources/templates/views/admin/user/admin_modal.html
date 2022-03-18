@@ -1,0 +1,104 @@
+<div th:fragment="permission_modal" id="modalPermission">
+    <div class="modal fade" id="modalPermissionBody" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div th:fragment="admin_roles" id="admin-roles-select">
+                    <div class="modal-header">
+                        <h5 class="modal-title mx-auto" id="exampleModalLabel">Provide Permission</h5>
+                    </div>
+                    <div class="modal-body mx-5">
+                            <fieldset disabled>
+                                <div class="mb-3">
+                                    <label for="disabledTextInput1" class="form-label">Full Name</label>
+                                    <input type="text" id="disabledTextInput1" class="form-control"
+                                           th:if="${user != null}"
+                                           th:value="${user.lastName + ', ' + user.firstName}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="disabledTextInput2" class="form-label">Email</label>
+                                    <input type="text" id="disabledTextInput2" class="form-control"
+                                           th:if="${user != null}"
+                                           th:value="${user.email}">
+                                </div>
+                            </fieldset>
+
+                            <form action="" id="role-form">
+                                <div class="mb-3 shadow-sm p-2 rounded-2 border border-1 border-bottom-5">
+                                    <h5 class="col-form-label">Select Role:</h5>
+
+                                    <div th:if="${!roles.empty}"
+                                         th:each="userRole : ${roles}">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                   th:checked="${userRole.role.check}"
+                                                   th:id="${userRole.role.roleId}">
+                                            <label class="form-check-label" th:for="${userRole.role.roleId}"
+                                                   th:text="${userRole.role.roleName}">
+                                                Default checkbox
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+                    <div class="modal-footer mx-auto">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary"
+                                th:if="${user != null}"
+                                th:onclick="updateRole([[${user}]], event)">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div th:fragment="permission_modal_multiple" id="modalPermissionMultiple">
+    <div class="modal fade" id="modalPermissionMultipleBody" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div th:fragment="admin_roles_multiple" id="admin-roles-select-multiple">
+                    <div class="modal-header">
+                        <h5 class="modal-title mx-auto">Update permission</h5>
+                    </div>
+                    <div class="modal-body mx-5">
+
+                        <form action="" id="role-form-multiple">
+                            <div class="mb-3 shadow-sm p-2 rounded-2 border border-1 border-bottom-5">
+                                <h5 class="col-form-label">Select Permission for selected user(s):</h5>
+
+                                <div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="rolePermissson" id="activeEnable" value="enable">
+                                        <label class="form-check-label" for="activeEnable">
+                                            Active (Enable)
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="rolePermissson" id="deactivateDisable" value="disable">
+                                        <label class="form-check-label" for="deactivateDisable">
+                                            Deactivate (Disable)
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer mx-auto">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary"
+                                onclick="updatePermissionForManyUsers(event)">
+                            Update
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

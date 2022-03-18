@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="views/fragments :: page_head(${pageTitle})"></head>
+<body>
+<div class="container-fluid text-center px-0">
+	<div th:replace="views/navigation :: header_menu('none')"></div>
+
+	<div th:if="${title != null}">
+		<h2>[[${title}]]</h2>
+	</div>
+		
+	<div th:if="${message != null}">
+		<h3>[[${message}]]</h3>
+	</div>
+
+	<div th:replace="views/navigation :: footer_menu"></div>
+</div>	
+</body>
+</html>

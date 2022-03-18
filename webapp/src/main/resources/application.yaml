@@ -1,0 +1,23 @@
+
+# HTTP server port
+server:
+  port: 7070
+  error:
+    include-message: always
+
+spring:
+  profiles:
+    active: local
+  # Upload file
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  main:
+    allow-circular-references: true
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        web: DEBUG

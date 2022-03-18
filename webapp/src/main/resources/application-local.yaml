@@ -1,0 +1,49 @@
+
+spring:
+  # Spring JDBC Properties
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=donation
+    username: postgres
+    password: postgres
+  # Flyway config
+  flyway:
+#    enabled: false
+    schemas: donation
+    outOfOrder: true
+    baseline-version: 0
+    baselineOnMigrate: true
+    table: schema_history
+#  jpa:
+#    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 145348104069-qdppn8sv4b7mji3t0fdt69j8c0vojga9.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+
+cloudinary:
+  cloud_name: dln5uctjy
+  api_key: 178999394358853
+  api_secret: 6nu3xobxnAC_95T_sr3GHkbp9mE
+  secure: true
+  folder: donation/file/
+  path: https://res.cloudinary.com/dln5uctjy/
+
+sender:
+  mail:
+    active: true
+    host: smtp.gmail.com
+    port: 587
+    username: loidinh37.k42@st.ueh.edu.vn
+    password: ixlxylwefhblxpmn
+    from: DONATION APP LOCAL <email.local.notification@gmail.com>
+
+paypal:
+  client-id: ATlzVQrijDFdtZfiy4M0giuNtIBYf29dKcLeI8HB76j5BD2kR5GERP56oHrqNVBhaXeUQQedQfsg8ZTd
+  client-secret: EKbyEAttEyh95pozkYpTgkZKy-OD0RUJy3Kg6NJaSOQADarZ2Bt4aMKbSgHDbQhuGRRqzrH0yVABR5_8
+  payment-api: https://sandbox.paypal.com/v2/payments/captures/

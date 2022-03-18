@@ -1,0 +1,4 @@
+paypal:
+    client-id: ATlzVQrijDFdtZfiy4M0giuNtIBYf29dKcLeI8HB76j5BD2kR5GERP56oHrqNVBhaXeUQQedQfsg8ZTd
+    client-secret: EKbyEAttEyh95pozkYpTgkZKy-OD0RUJy3Kg6NJaSOQADarZ2Bt4aMKbSgHDbQhuGRRqzrH0yVABR5_8
+    order-api: https://www.sandbox.paypal.com/v2/checkout/orders/

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="views/fragments :: page_head('Login')"></head>
+<body>
+<div class="container-fluid text-center px-0">
+	<div th:replace="views/navigation :: header_menu('login')"></div>
+
+	<div class="container-fluid pb-5 mb-5">
+		<div class="row my-3">
+			<!-- Sign in Section -->
+			<div class="col-md-6">
+				<h1 th:text="#{nav.login}"></h1>
+
+				<div class="col-md-7 mx-auto">
+					<div class="row my-1">
+						<a class="btn btn-lg btn-secondary fab fa-google" th:href="@{/oauth2/authorization/google}"
+						   th:text="'&nbsp;&nbsp;' + #{login.google}"></a>
+					</div>
+
+				</div>
+
+				<div th:if="${param.logout != null}">
+					<p class="alert alert-success"
+						th:text="#{login.logout}"></p>
+				</div>
+
+				<div th:if="${error != null}">
+					<p th:text="${error}" class="alert alert-danger"></p>
+				</div>
+
+				<!-- Login form -->
+				<form th:action="@{/login}"
+					  method="POST">
+
+					<label for="inputEmail" class="sr-only">Username</label>
+					<input name="username"
+						   type="text" id="inputEmail" class="form-control my-3"
+						   placeholder="Username" required autofocus>
+
+					<label for="inputPassword" class="sr-only">Password</label>
+					<input name="password"
+						   type="password" id="inputPassword" class="form-control my-3"
+						   placeholder="Password" required>
+
+
+					<div class="checkbox mb-3">
+						<label> <input type="checkbox" value="remember-me">
+							<p th:text="#{login.remember}"></p>
+						</label>
+					</div>
+					<button class="btn btn-lg btn-primary btn-block" type="submit"
+							th:text="#{nav.login}"></button>
+					<p class="mt-5 mb-3 text-muted">&copy 2021-2022</p>
+				</form>
+
+				<!-- Forgot Password -->
+				<div class="d-flex flex-row justify-content-center">
+					<p th:text="#{login.or}"></p>
+					&nbsp
+					<a class="link-primary my-1"
+						th:href="@{/user/forgot-password}"
+					   th:text="#{login.forgot}"></a>
+				</div>
+
+				<!-- Sign up a new account -->
+				<div class="d-flex flex-row justify-content-center">
+					<p th:text="#{login.question_account}"></p>
+					&nbsp
+					<a class="link-primary my-1"
+					   th:href="@{/signup}"
+					   th:text="#{login.signup}"></a>
+				</div>
+			</div>
+
+			<!-- Information Section -->
+			<div class="col-md-6">
+				<div class="card card-box shadow">
+					<h1 class="text-center">Welcome Back!</h1>
+					<p class="text-center">To keep connected with us please login
+						with your personal info</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="views/navigation :: footer_menu"></div>
+</div>
+</body>
+
+
+</html>

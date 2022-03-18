@@ -1,0 +1,123 @@
+<head th:fragment="page_head(sub_title)">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
+
+    <title th:text="'Donation - ' + ${sub_title}"></title>
+
+    <link th:rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}" />
+    <link th:rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/5.15.2/css/all.min.css}" />
+    <link th:rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap-select/1.14.0-beta2/dist/css/bootstrap-select.min.css}" />
+    <link th:rel="stylesheet" type="text/css" th:href="@{/webjars/summernote/0.8.10/summernote-lite.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style_admin.css}" />
+
+</head>
+
+<header th:fragment="header_bar">
+    <div class="container-fluid">
+        <div class="hstack">
+            <div class="my-3 mx-2 me-5">
+                <a th:href="@{/admin}">
+                    <i class="fas fa-hand-holding-medical fa-5x"></i>
+                </a>
+            </div>
+
+            <div class="my-1">
+                <a class="text-decoration-none" th:href="@{/admin}">
+                    <h1 class="fs-1">Donation Admin</h1>
+                </a>
+            </div>
+
+
+            <th:block sec:authorize="isAuthenticated()">
+                <div class="ms-auto">
+                    <a th:href="@{/user-detail}"><i class="far fa-id-badge fa-3x"></i>
+                    </a>
+                    <a th:href="@{/logout}" class="text-white fw-bold mx-3">Log out
+                    </a>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</header>
+
+<div th:fragment="side_bar(bar)">
+    <nav id="sidebar">
+        <ul class="list-unstyled components">
+            <li th:classappend="${bar} eq 'overview' ? 'active'">
+                <div class="text-center py-2 pt-4 position-relative">
+                    <div class="my-3">
+                        <i class="fas fa-chart-pie fa-3x"></i>
+                        <a class="stretched-link"
+                           th:href="@{/admin/overview}">
+                            Overview
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <li th:classappend="${bar} eq 'user' ? 'active'">
+                <div class="text-center py-2 pt-4 position-relative">
+                    <div class="my-3">
+                        <i class="fas fa-user-friends fa-3x"></i>
+                        <a class="stretched-link"
+                           th:href="@{/admin/user}">
+                            User Management
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <li th:classappend="${bar} eq 'project' ? 'active'">
+                <div class="text-center py-2 pt-4 position-relative">
+                    <div class="my-3">
+                        <i class="fas fa-hand-holding-heart fa-3x"></i>
+                        <a class="stretched-link"
+                           th:href="@{/admin/project}">
+                            Project Management
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <li th:classappend="${bar} eq 'payment' ? 'active'">
+                <div class="text-center py-2 pt-4 position-relative">
+                    <div class="my-3">
+                        <i class="fas fa-file-invoice-dollar fa-3x"></i>
+                        <a class="stretched-link"
+                           th:href="@{/admin/payment}">
+                            Process Manual Payment
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </nav>
+</div>
+
+
+<div th:fragment="search_user">
+    <form class="d-flex" method="GET">
+        <input class="form-control me-2" type="search" aria-label="Search"
+               name="searchKey" id="searchValue"
+               placeholder="Search by email or phone number"
+               th:value="${param.searchKey}">
+        <button class="btn btn-outline-primary" type="submit"
+                onclick="retrieveUsers(event, undefined)">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+</div> <!-- Search -->
+
+<div th:fragment="search_role">
+    <form class="d-flex" method="GET">
+        <input class="form-control me-2" type="search" aria-label="Search"
+               name="searchKey" id="searchValueForRole"
+               placeholder="Search by email or phone number"
+               th:value="${param.searchKey}">
+        <button class="btn btn-outline-primary" type="submit"
+                onclick="retrieveUsersInRole(event, undefined)">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+</div> <!-- Search -->

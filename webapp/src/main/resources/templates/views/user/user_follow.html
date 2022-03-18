@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="views/fragments :: page_head('Your Account Details')"></head>
+<body>
+<div class="container-fluid px-0">
+    <div th:replace="views/navigation :: header_menu('user')"></div>
+
+    <div class="wrapper">
+        <div th:replace="views/user/user_fragmetns :: side_bar_user('userFollow')"></div>
+
+        <div class="container-fluid">
+            <div class="row my-3">
+                <div class="text-center">
+                    <h2>Following Project</h2>
+                </div>
+            </div>
+
+
+            <div th:fragment="follow_table" id="followResult">
+                <div class="shadow-lg rounded mx-1 my-3">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="text-center">#</th>
+                            <th scope="col" class="text-center">Project ID</th>
+                            <th scope="col" class="text-center">Project Name</th>
+                            <th scope="col" class="text-center">Status</th>
+                            <th scope="col" class="text-center">Target</th>
+                            <th scope="col" class="text-center">Donated</th>
+                            <th scope="col" class="text-center">Target Date</th>
+                            <th scope="col" class="text-center">Beneficiary</th>
+                        </tr>
+                        </thead>
+                        <tbody class="overflow-scroll">
+                        <tr th:if="${!content.empty}"
+                            th:each="project, iteration : ${content}">
+
+                            <th scope="row" th:text="${iteration.count}"></th>
+
+                            <th>
+                                <a class="text-decoration-none"
+                                   th:text="${project.projectId}"
+                                   th:href="@{/project/{projectId}(projectId=${project.projectId})}"></a>
+                            </th>
+
+                            <td th:text="${project.projectName}"></td>
+
+                            <td th:text="${project.status.statusName}"></td>
+
+                            <td>
+                                <th:block th:switch="__${#locale.language}__">
+                                    <div th:case="'vi'">
+                                        <p class="text-end" th:text="${#numbers.formatDecimal(project.targetMoney, 3, 'WHITESPACE', 2, 'COMMA') + ' VND'}"></p>
+                                    </div>
+
+                                    <div th:case="*">
+                                        <p class="text-end" th:text="${#numbers.formatDecimal(project.targetMoney, 3, 'WHITESPACE', 2, 'POINT') + ' VND'}"></p>
+                                    </div>
+                                </th:block>
+                            </td>
+
+                            <td>
+                                <th:block th:switch="__${#locale.language}__">
+                                    <div th:case="'vi'">
+                                        <p class="text-end" th:text="${#numbers.formatDecimal(project.currentMoney, 3, 'WHITESPACE', 2, 'COMMA') + ' VND'}"></p>
+                                    </div>
+
+                                    <div th:case="*">
+                                        <p class="text-end" th:text="${#numbers.formatDecimal(project.currentMoney, 3, 'WHITESPACE', 2, 'POINT') + ' VND'}"></p>
+                                    </div>
+                                </th:block>
+                            </td>
+
+                            <td>
+                                <span th:text="${#dates.format(project.targetTime, 'dd-MM-yyyy')}"></span>
+                            </td>
+
+                            <td th:text="${project.beneficiary.beneficiaryName}"></td>
+
+                        </tr>
+                        </tbody>
+                    </table> <!-- Table -->
+                </div>
+                <div th:replace="views/fragments :: pagination"></div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="views/navigation :: footer_menu"></div>
+</div>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/2.9.2/umd/popper.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}" ></script>
+<script th:inline="javascript" th:src="@{/js/user_follower.js}"></script>
+</body>
+</html>

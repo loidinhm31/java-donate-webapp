@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="views/fragments :: page_head('Your Account Details')"></head>
+<body>
+<div class="container-fluid px-0">
+	<div th:replace="views/navigation :: header_menu('user')"></div>
+
+	<div class="wrapper">
+		<div th:replace="views/user/user_fragmetns :: side_bar_user('userInfo')"></div>
+
+		<div class="container-fluid">
+			<div class="row my-3">
+				<div class="text-center">
+					<h2>Your Account Details</h2>
+				</div>
+			</div>
+
+			<div class="row my-3">
+				<div class="col-md-8 mx-auto">
+					<form th:action="@{/user-detail/update}" method="POST" th:object="${user}" class="mx-3 my-3">
+						<input type="hidden" name="redirect" th:value="${param.redirect}" />
+
+						<div th:if="${message != null}" class="alert alert-success text-center">
+							[[${message}]]
+						</div>
+						<div class="border border-secondary rounded p-3">
+							<div class="form-group row my-2 mx-2">
+								<label class="col-sm-3 col-form-label btn btn-info text-white fw-bold text-start">Authentication Type:</label>
+								<div class="col-sm-8">
+									<input type="text" th:field="*{authenticationType}" class="form-control" readonly="readonly"/>
+								</div>
+							</div>
+
+							<div class="form-group row my-2 mx-2">
+								<label class="col-sm-3 col-form-label btn btn-info text-white fw-bold text-start">Username:</label>
+								<div class="col-sm-8">
+									<input type="text" th:field="*{userAccount.username}" class="form-control" readonly="readonly"/>
+								</div>
+							</div>
+
+							<div class="form-group row my-2 mx-2">
+								<label class="col-sm-3 col-form-label btn btn-info text-white fw-bold text-start">E-mail:</label>
+								<div class="col-sm-8">
+									<input type="text" th:field="*{email}" class="form-control" readonly="readonly"/>
+								</div>
+							</div>
+
+							<div class="form-group row my-2 mx-2">
+								<label class="col-sm-3 col-form-label btn btn-info text-white fw-bold text-start">First Name:</label>
+								<div class="col-sm-8">
+									<input type="text" th:field="*{firstName}" class="form-control"
+										   required="required" maxlength="45" minlength="2" />
+								</div>
+							</div>
+
+							<div class="form-group row my-2 mx-2">
+								<label class="col-sm-3 col-form-label btn btn-info text-white fw-bold text-start">Last Name:</label>
+								<div class="col-sm-8">
+									<input type="text" th:field="*{lastName}" class="form-control"
+										   required="required" maxlength="45" minlength="2" />
+								</div>
+							</div>
+
+							<div class="form-group row my-2 mx-2">
+								<label class="col-sm-3 col-form-label btn btn-info text-white fw-bold text-start">Phone Number:</label>
+								<div class="col-sm-8">
+									<input type="text" th:field="*{phoneNumber}" class="form-control"
+										   maxlength="15" minlength="8" />
+								</div>
+							</div>
+
+							<th:block th:if="${user.authenticationType.name() == 'BASIC'}">
+								<div class="form-group row my-2 mx-2">
+									<label class="col-sm-3 col-form-label btn btn-info text-white fw-bold text-start">Password:</label>
+									<div class="col-sm-8">
+										<input type="password" th:field="*{password}" class="form-control"
+											   maxlength="15" minlength="6"  id="password"
+											   oninput="checkPasswordMatch(document.getElementById('confirmPassword'))"
+										/>
+									</div>
+								</div>
+
+								<div class="form-group row my-2 mx-2">
+									<label class="col-sm-3 col-form-label btn btn-info text-white fw-bold text-start">Re-type Password:</label>
+									<div class="col-sm-8">
+										<input type="password" id="confirmPassword" class="form-control"
+											   maxlength="15" minlength="6"
+											   oninput="checkPasswordMatch(this)"
+										/>
+									</div>
+								</div>
+							</th:block>
+
+
+							<div class="text-center my-3">
+								<input type="submit" value="Update" class="btn btn-primary" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="views/navigation :: footer_menu"></div>
+</div>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/2.9.2/umd/popper.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}" ></script>
+<script type="text/javascript" th:src="@{/js/common_user_form.js}"></script>
+</body>
+</html>

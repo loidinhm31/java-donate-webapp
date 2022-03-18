@@ -1,0 +1,199 @@
+<div th:fragment="tab_detail">
+    <div class="pb-5 mx-2" id="page-content">
+       <div class="row">
+           <div class="my-3 col-7">
+               <div class="row">
+                   <h2 class="pt-2"
+                       th:text="${detail.projectName}">
+                   </h2>
+
+                   <p class="text-muted my-3"
+                      th:text="${detail.projectSummary}">
+                   </p>
+               </div>
+           </div>
+
+           <div class="col-5">
+               <img th:with="filePath=${detail.filePath != null ? detail.filePath : 'sample.jpg'}"
+                    th:src="${rootPath + filePath}"
+                    class="img-thumbnail img-fluid rounded float-end mt-5" alt="..."/>
+           </div>
+
+           <small class="text-muted my-3"
+                  th:text="${#dates.format(detail.createdAt, 'dd-MM-yyyy')}">
+           </small>
+       </div>
+
+        <ul class="nav nav-tabs ps-3" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="story-tab" data-bs-toggle="tab" data-bs-target="#home"
+                        type="button" role="tab" aria-controls="home" aria-selected="true"
+                        onclick="">
+                    <p class="fw-bold">Story</p>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="donator-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                        type="button" role="tab" aria-controls="profile" aria-selected="false"
+                        th:onclick="retrieveDonators(event, [[${projectId}]], undefined)">
+                    <p class="fw-bold">List of Donator</p>
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="story-tab">
+                <div th:replace="views/project/project_tab_fragments :: story"></div>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="donator-tab">
+                <div th:replace="views/project/project_tab_fragments :: donator"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="story">
+    <div class="hstack my-3 pe-3">
+        <div>
+            <h4>Story</h4>
+        </div>
+        <th:block sec:authorize="isAuthenticated()">
+            <div class="ms-auto">
+                <button class="btn fw-bold text-white follow" style="background-color: #AD56FF;"
+                        th:if="${isFollow != null}"
+                        th:onclick="followProject(event, [[${projectId}]])"
+                        th:text="${isFollow ? 'Following' : 'Follow'}">
+                </button>
+            </div>
+        </th:block>
+    </div>
+    <div class="rounded-1">
+        <div class="my-3"
+                th:utext="${detail.projectContent}"></div>
+    </div>
+</div>
+
+<div th:fragment="donator" id="donatorResult">
+    <table class="table table-hover my-3">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Message</th>
+            <th scope="col">Amount</th>
+        </tr>
+        </thead>
+
+        <tbody class="overflow-scroll">
+        <tr th:if="${!content.empty}"
+            th:each="donator : ${content}">
+
+            <td>
+                <i class="far fa-user-circle fa-3x"></i>
+            </td>
+
+            <td th:text="${donator.supporterName}"></td>
+
+            <td th:text="${donator.message}"></td>
+
+            <td>
+                <th:block th:switch="__${#locale.language}__">
+                    <div class="hstack gap-0"
+                         th:case="'vi'">
+                        <p class="card-text fw-bold text-end"
+                           th:text="${#numbers.formatDecimal(donator.amount, 3, 'WHITESPACE', 2, 'COMMA') + ' VND'}">
+                        </p>
+                    </div>
+
+                    <div class=""
+                         th:case="*">
+                        <p class="card-text fw-bold text-end"
+                           th:text="${#numbers.formatDecimal(donator.amount, 3, 'WHITESPACE', 2, 'POINT') + ' VND'}">
+                        </p>
+                    </div>
+                </th:block>
+            </td>
+        </tr>
+        </tbody>
+    </table> <!-- Table -->
+
+    <div th:replace="views/fragments :: pagination"></div>
+</div>
+
+<div th:fragment="project_info">
+    <div class="shadow-lg border-2 rounded-3 p-4 bg-light">
+        <div class="row text-center">
+            <h3 class="mb-5">Project Information</h3>
+        </div>
+
+        <th:block th:switch="__${#locale.language}__">
+            <div class="hstack gap-0"
+                 th:case="'vi'">
+                <p class="card-text fw-bold"
+                   th:text="${#numbers.formatDecimal(detail.currentMoney, 3, 'WHITESPACE', 2, 'COMMA') + ' VND'}">
+                </p>
+                <p>&nbsp donated/ &nbsp</p>
+                <p th:text="${#numbers.formatDecimal(detail.targetMoney, 3, 'WHITESPACE', 2, 'COMMA') + ' VND'}"></p>
+            </div>
+
+            <div class="hstack gap-0"
+                 th:case="*">
+                <p class="card-text fw-bold"
+                   th:text="${#numbers.formatDecimal(detail.currentMoney, 3, 'WHITESPACE', 2, 'POINT') + ' VND'}">
+                </p>
+                <p>&nbsp donated/ &nbsp</p>
+                <p th:text="${#numbers.formatDecimal(detail.targetMoney, 3, 'WHITESPACE', 2, 'POINT') + ' VND'}"></p>
+            </div>
+        </th:block>
+        <div class="progress rounded-5">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 75%"
+                 th:style="'width:' + ( ${detail.targetMoney} == 0  ? '0' : (${detail.currentMoney * 1.0} / ${detail.targetMoney}) * 100.0 ) + '%;'"
+                 th:aria-valuemin="0"
+                 th:aria-valuemax="100"></div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col-sm-5">
+                <p>Donation times</p>
+                <p class="fw-bold" th:text="${detail.donatedCount}"></p>
+            </div>
+            <div class="col-sm-3">
+                <p>Reach</p>
+                <p class="fw-bold"
+                   th:with="progress=(${detail.targetMoney} == 0  ? '0' : (${detail.currentMoney * 1.0} / ${detail.targetMoney}) * 100.0 )"
+                   th:text="${#numbers.formatDecimal(progress, 0, 'WHITESPACE', 0, 'POINT')  + '%'}">
+
+                </p>
+            </div>
+            <div class="col-sm-4">
+                <p>Time Remain</p>
+
+                <div th:with="diffDate=${(detail.targetTime.getTime() - currentDate.getTime()) / (86400.0 * 1000.0)}">
+                    <p class="fw-bold"
+                       th:if="${diffDate >= 0}"
+                       th:text="${#numbers.formatInteger(diffDate, 0, 'POINT') + ' day(s)'}">
+                    </p>
+
+                    <p class="fw-bold"
+                       th:unless="${diffDate >= 0}"
+                       th:text="${#numbers.formatInteger(-diffDate, 0, 'POINT') + ' day(s) OVERDUE'}">
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <p class="btn btn-info col-auto fw-bold text-white">Beneficiary</p>
+            <p th:text="${detail.beneficiary.beneficiaryName}" class="col-auto"></p>
+        </div>
+
+        <div class="row" th:if="${detail.status == detail.status.IN_PROGRESS}">
+            <button class="btn text-white fw-bold my-2" style="background-color: #FF8B00"
+                    data-bs-toggle="modal" data-bs-target="#donateDetailModal">
+                Donate
+            </button>
+        </div>
+    </div>
+
+    <div th:replace="views/project/project_modal :: donate_modal"></div>
+</div>
